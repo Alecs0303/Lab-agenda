@@ -15,6 +15,13 @@ public class AffiliatesServices {
 
     public ArrayList<AffiliatesModels> obtenerAffiliate(){
         return (ArrayList<AffiliatesModels>) affiliatesRepository.findAll();
+        // SELECT * FROM springboot.appointments;
+    }
+
+    public AffiliatesModels obtenerAffiliateByID(Long id){
+        Optional<AffiliatesModels> affiliate = affiliatesRepository.findById(id);
+        return affiliate.get();
+        // SELECT * FROM springboot.appointments WHERE id = 14;
     }
 
     public AffiliatesModels guardarAffiliate(AffiliatesModels affiliate){
@@ -23,11 +30,6 @@ public class AffiliatesServices {
     
     public AffiliatesModels actualizarAffiliate(AffiliatesModels affiliate){
         return affiliatesRepository.save(affiliate);
-    }
-
-    public AffiliatesModels obtenerAffiliateByID(Long id){
-        Optional<AffiliatesModels> affiliate = affiliatesRepository.findById(id);
-        return affiliate.get();
     }
 
     public void eliminarAffiliate(Long id){

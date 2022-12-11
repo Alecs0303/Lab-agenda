@@ -12,7 +12,7 @@ public class TestsModels {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_test", unique = true, nullable = false)
-    private Long id;
+    private int id;
 
     private String name;
     private String description;
