@@ -2,7 +2,6 @@ package com.example.demo.Controllers;
 
 import java.util.*;
 
-import com.example.demo.Models.AppointmentsModels;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.*;
@@ -11,14 +10,14 @@ import com.example.demo.Models.AffiliatesModels;
 import com.example.demo.Services.AffiliatesServices;
 
 @RestController
-@RequestMapping("/affiliates")
+@RequestMapping("/api/controller/affiliates")
 public class AffiliatesControllers {
-    
+
     @Autowired
     AffiliatesServices affiliatesServices;
 
-    @GetMapping("/api/controller/get")
-    public ResponseEntity<List<AffiliatesModels>> obtenerAffiliate(){
+    @GetMapping()
+    public ResponseEntity<?> obtenerAffiliate(){
         List<AffiliatesModels> data = affiliatesServices.obtenerAffiliate();
         if(data == null || data.isEmpty()){
             return ResponseEntity.noContent().build();
@@ -27,24 +26,23 @@ public class AffiliatesControllers {
         }
     }
 
-    @GetMapping("/api/controller/get/{id}")
-    public ResponseEntity<?> obtenerAffiliateByID(@PathVariable Long id) {
+    @GetMapping("{id}")
+    public ResponseEntity<?> obtenerAffiliateByID(@PathVariable("id") Long id) {
         Map<String,Object> response = new HashMap<>();
-        AffiliatesModels a = null;
-
+        Optional<AffiliatesModels> a = Optional.empty();
         try {
             a = affiliatesServices.obtenerAffiliateByID(id);
-            if (a != null) {
+            if (a.isPresent()) {
                 response.put("Message", a);
             }
         }catch(Exception e){
             response.put("Message", "Unable to find affiliate ".concat(id.toString()));
-            return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/api/controller/post")
+    @PostMapping()
     public ResponseEntity<?> guardarAffiliate(@RequestBody AffiliatesModels affiliate){
         Map<String,Object> response = new HashMap<>();
         try {
@@ -53,24 +51,21 @@ public class AffiliatesControllers {
         }catch (DataAccessException e){
             response.put("Message", "Unable to save affiliate");
             response.put("Error", e.getMostSpecificCause().getMessage());
-            return new ResponseEntity<Map<String,Object>>(response, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Map<String,Object>>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/api/controller/put/{id}")
-    public ResponseEntity<?> actualizarAffiliate(@RequestBody AffiliatesModels affiliate, @PathVariable Long id){
+    @PutMapping("{id}")
+    public ResponseEntity<?> actualizarAffiliate(@RequestBody AffiliatesModels affiliate, @PathVariable("id") long id){
         Map<String,Object> response = new HashMap<>();
-        AffiliatesModels a = null;
+        Optional<AffiliatesModels> a = affiliatesServices.obtenerAffiliateByID(id);
         try {
-            a = affiliatesServices.obtenerAffiliateByID(id);
-
-            if(a != null){
-                a.setName(affiliate.getName());
-                a.setAge(affiliate.getAge());
-                a.setMail(affiliate.getMail());
-
-                affiliatesServices.guardarAffiliate(a);
+            if(a.isPresent()){
+                a.get().setName(affiliate.getName());
+                a.get().setAge(affiliate.getAge());
+                a.get().setMail(affiliate.getMail());
+                affiliatesServices.guardarAffiliate(a.get());
                 response.put("Message", "Affiliate edited");
             }
         }catch (Exception e){
@@ -80,8 +75,8 @@ public class AffiliatesControllers {
         return new ResponseEntity<Map<String,Object>>(response, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/api/controller/delete/{id}")
-    public ResponseEntity<?> eliminarAffiliate(@PathVariable("id") Long id) throws Exception{
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> eliminarAffiliate(@PathVariable Long id) throws Exception{
         Map<String,Object> response = new HashMap<>();
         try {
             affiliatesServices.eliminarAffiliate(id);

@@ -1,13 +1,19 @@
 package com.example.demo.Models;
 
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+
 @Entity
 @Table(name = "affiliates")
-@Data
+//@Data
 public class AffiliatesModels {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
