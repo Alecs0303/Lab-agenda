@@ -6,5 +6,5 @@ import com.example.demo.Models.AffiliatesModels;
 
 @Repository
 public interface AffiliatesRepository extends CrudRepository<AffiliatesModels, Long> {
-    
+
 }

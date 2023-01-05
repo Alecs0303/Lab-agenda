@@ -1,14 +1,19 @@
 package com.example.demo.Models;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+
 @Entity
 @Table(name = "tests")
-@Data
+//@Data
 public class TestsModels {
-   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_test", unique = true, nullable = false)
