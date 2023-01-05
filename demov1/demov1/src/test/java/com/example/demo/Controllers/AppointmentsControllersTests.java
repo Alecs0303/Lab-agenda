@@ -93,6 +93,42 @@ public class AppointmentsControllersTests implements Serializable {
     }
 
     @Test
+    void obtenerAppointmentByIDStatusNotFound() throws Exception {
+
+        long id = 1L;
+        AppointmentsModels appointmentsModels = AppointmentsModels.builder()
+                .date("01/11/10")
+                .hour("01:01")
+                .build();
+
+        given(appointmentsServicesMock.obtenerAppointmentByID(id)).willReturn(Optional.empty());
+
+        MvcResult response = mockMvc.perform(get("/api/controller/appointments/{id}", id))
+                .andExpect(status().isNotFound()).andDo(print()).andReturn();
+
+        System.out.println(objectMapper.writeValueAsString(appointmentsModels));
+        Assertions.assertEquals(response.getResponse().getStatus(), 404);
+    }
+
+    /*@Test
+    void obtenerAppointmentByAffiliatesID() throws Exception {
+
+        long id_affiliate = 1L;
+        AppointmentsModels appointmentsModels = AppointmentsModels.builder()
+                .date("01/11/10")
+                .hour("01:01")
+                .build();
+
+        given(appointmentsServicesMock.obtenerAppointmentByAffiliatesID(id_affiliate)).willReturn(Optional.of(appointmentsModels));
+
+        MvcResult response = mockMvc.perform(get("/api/controller/appointments/{id_affiliate}", id_affiliate))
+                .andExpect(status().isOk()).andDo(print()).andReturn();
+
+        System.out.println(objectMapper.writeValueAsString(appointmentsModels));
+        Assertions.assertEquals(response.getResponse().getStatus(), 200);
+    }*/
+
+    @Test
     void guardarAppointmentStatusCreated() throws Exception {
         AppointmentsModels appointmentsModels = AppointmentsModels.builder()
                 .id(1L)

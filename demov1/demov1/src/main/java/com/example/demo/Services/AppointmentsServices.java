@@ -1,6 +1,5 @@
 package com.example.demo.Services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +24,10 @@ public class AppointmentsServices {
         return appointmentsRepository.findById(id);
     }
 
-    public Optional<AppointmentsModels> obtenerAppointmentByDate(String date){
+    /*public Optional<AppointmentsModels> obtenerAppointmentByDate(String date){
         return appointmentsRepository.find(date);
         // parsear fechas if fecha!=se manda un wrn | peticiones get por query string
-    }
+    }*/
 
     public Optional<AppointmentsModels> obtenerAppointmentByAffiliatesID(long id_affiliate){
         return appointmentsRepository.findById(id_affiliate);

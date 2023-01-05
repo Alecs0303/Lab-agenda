@@ -93,21 +93,23 @@ class TestsControllersTests implements Serializable {
         Assertions.assertEquals(response.getResponse().getStatus(), 200);
     }
 
-    /*@Test
+    @Test
     void obtenerTestByIDStatusNotFound() throws Exception {
-        long testId = 1L;
+
+        long id = 1L;
         TestsModels testsModels = TestsModels.builder()
                 .name("Test")
                 .description("Test 1")
                 .build();
 
-        given(testsServicesMock.obtenerTestByID(testId)).willReturn(Optional.empty());
+        given(testsServicesMock.obtenerTestByID(id)).willReturn(Optional.empty());
 
-        MvcResult response = mockMvc.perform(get("/api/controller/test/{id}", testId))
+        MvcResult response = mockMvc.perform(get("/api/controller/test/{id}", id))
                 .andExpect(status().isNotFound()).andDo(print()).andReturn();
 
+        System.out.println(objectMapper.writeValueAsString(testsModels));
         Assertions.assertEquals(response.getResponse().getStatus(), 404);
-    }*/
+    }
 
     @Test
     void guardarTestStatusCreated() throws Exception {
@@ -221,23 +223,5 @@ class TestsControllersTests implements Serializable {
 
         Assertions.assertEquals(result.getResponse().getStatus(), 200);
     }
-
-    /*@Test
-    void eliminarTestN() throws Exception {
-        long id = 1L;
-
-        //Map<String,Object> response = new HashMap<>();
-        //response.put("Message", "Unable to delete test");
-
-        willDoNothing().given(testsServicesMock).eliminarTest(null);
-
-        MvcResult result = mockMvc.perform(delete("/api/controller/test/2"))
-                .andExpect(status().isNoContent())
-                .andReturn();
-
-        // System.out.println("Soy lo que quieren ver");
-        // System.out.println(result.getResponse().getContentAsString());
-        Assertions.assertEquals(result.getResponse().getStatus(), 204);
-    }*/
 
 }

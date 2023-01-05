@@ -95,6 +95,24 @@ public class AffiliatesControllersTests implements Serializable {
     }
 
     @Test
+    void obtenerAffiliateByIDStatusNotFound() throws Exception {
+        long id = 1L;
+        AffiliatesModels affiliatesModels = AffiliatesModels.builder()
+                .name("Affiliate 1")
+                .age(10)
+                .mail("Affiliate1@gmail.com")
+                .build();
+
+        given(affiliatesServicesMock.obtenerAffiliateByID(id)).willReturn(Optional.empty());
+
+        MvcResult response = mockMvc.perform(get("/api/controller/affiliates/{id}", id))
+                .andExpect(status().isNotFound()).andDo(print()).andReturn();
+
+        System.out.println(objectMapper.writeValueAsString(affiliatesModels));
+        Assertions.assertEquals(response.getResponse().getStatus(), 404);
+    }
+
+    @Test
     void guardarAffiliateStatusCreated() throws Exception {
         AffiliatesModels affiliatesModels = AffiliatesModels.builder()
                 .id(1L)
